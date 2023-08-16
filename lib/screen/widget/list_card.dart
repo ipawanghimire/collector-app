@@ -1,130 +1,138 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class ListViewBuilderTable extends StatelessWidget {
-  final List<Map<String, String>> listViewItems = [
-    {'sn': '1', 'name': 'John Doe', 'amount': 'Rs. 1000', 'type': 'Deposit'},
-    {'sn': '2', 'name': 'Jane Smith', 'amount': 'Rs. 1500', 'type': 'Deposit'},
-    {'sn': '3', 'name': 'Alice Johnson', 'amount': 'Rs. 2000', 'type': 'Loan'},
-    {'sn': '4', 'name': 'Alice Johnson', 'amount': 'Rs. 2000', 'type': 'Loan'},
-    {'sn': '5', 'name': 'Alice Johnson', 'amount': 'Rs. 2000', 'type': 'Loan'},
-    {'sn': '6', 'name': 'Alice Johnson', 'amount': 'Rs. 2000', 'type': 'Loan'},
-    {'sn': '7', 'name': 'Alice Johnson', 'amount': 'Rs. 2000', 'type': 'Loan'},
-    {'sn': '8', 'name': 'Alice Johnson', 'amount': 'Rs. 2000', 'type': 'Loan'},
-    {'sn': '9', 'name': 'Alice Johnson', 'amount': 'Rs. 2000', 'type': 'Loan'},
-    {'sn': '10', 'name': 'Alice Johnson', 'amount': 'Rs. 2000', 'type': 'Loan'},
-    {'sn': '11', 'name': 'Alice Johnson', 'amount': 'Rs. 2000', 'type': 'Loan'},
-    // Add more items as needed
-  ];
+  final List<Map<String, dynamic>> listViewItems;
 
-  ListViewBuilderTable({Key? key}) : super(key: key);
+  const ListViewBuilderTable({Key? key, required this.listViewItems})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                flex: 1,
-                child: Text(
-                  'SN',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+    if (listViewItems.isEmpty) {
+      // Display a message when the table is empty
+      return const Center(
+        child: Text(
+          'No recent collections for today.',
+          style: TextStyle(fontSize: 18),
+        ),
+      );
+    } else {
+      // Display the ListView when there are records
+      return Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 40.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Text(
+                    'SN',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Text(
-                  'Name',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    'Name',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Text(
-                  'Amount',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    'Amount',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Text(
-                  'Type',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                Expanded(
+                  flex: 1,
+                  child: Text(
+                    'Type',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        const Divider(height: 10, thickness: 2),
-        ListView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: listViewItems.length,
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            final item = listViewItems[index];
-            final isEvenRow = index.isEven;
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Card(
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: isEvenRow ? Colors.grey[200] : Colors.white,
+          const Divider(height: 10, thickness: 2),
+          ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: listViewItems.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              final item = listViewItems[index];
+              final isEvenRow = index.isEven;
+
+              final name =
+                  item['accountName'] ?? ''; // Provide default value for name
+              final amount = item['amount']?.toString() ??
+                  ''; // Provide default value for amount
+              final type = item['type'] ?? ''; // Provide default value for type
+
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Card(
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                      ),
-                    ],
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Text(
-                          item['sn']!,
-                          style: const TextStyle(fontWeight: FontWeight.w600),
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: isEvenRow ? Colors.grey[200] : Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 2,
+                          blurRadius: 5,
                         ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Text(
-                          item['name']!,
-                          style: const TextStyle(fontWeight: FontWeight.w600),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            (index + 1).toString(),
+                            style: const TextStyle(fontWeight: FontWeight.w600),
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Text(
-                          item['amount']!,
-                          style: const TextStyle(fontWeight: FontWeight.w600),
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            name,
+                            style: const TextStyle(fontWeight: FontWeight.w600),
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Text(
-                          item['type']!,
-                          style: const TextStyle(fontWeight: FontWeight.w600),
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            amount,
+                            style: const TextStyle(fontWeight: FontWeight.w600),
+                          ),
                         ),
-                      ),
-                    ],
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            type,
+                            style: const TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
-        ),
-      ],
-    );
+              );
+            },
+          ),
+        ],
+      );
+    }
   }
 }

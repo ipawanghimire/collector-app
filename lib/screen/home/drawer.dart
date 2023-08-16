@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hoeizon_app/dp_helper/database.dart';
 
 import 'package:hoeizon_app/screen/bottom_nav.dart';
 import 'package:hoeizon_app/screen/collection/todays_collection.dart';
@@ -111,6 +112,23 @@ class DrawerContent extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          IconButton(
+            onPressed: () async {
+              await DatabaseHelper.instance.resetTable(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Table reset successfully'),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const BottomNavigation()),
+              );
+            },
+            icon: Icon(Icons.refresh),
           ),
           Padding(
             padding: const EdgeInsets.all(20.0),

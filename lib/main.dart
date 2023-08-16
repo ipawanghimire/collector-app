@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:hoeizon_app/provider/provider.dart';
 import 'package:hoeizon_app/screen/login_page.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => CollectionProvider(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

@@ -77,7 +77,7 @@ class _AddUserPageState extends State<AddUserPage> {
     'Buddhist',
     'Other'
   ];
-  List<File> _selectedImages = [];
+  final List<File> _selectedImages = [];
 
   Future<void> _pickImageFromCamera() async {
     final image = await ImagePicker().pickImage(source: ImageSource.camera);
@@ -85,7 +85,6 @@ class _AddUserPageState extends State<AddUserPage> {
       setState(() {
         _selectedImages.add(File(image.path));
       });
-      print('Image captured: ${_selectedImages.last.path}');
     }
   }
 
@@ -348,7 +347,7 @@ class _AddUserPageState extends State<AddUserPage> {
                   onPressed: _pickImageFromCamera,
                   child: const Text('Capture Image'),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 16,
                 ),
                 _buildImagePreview(),

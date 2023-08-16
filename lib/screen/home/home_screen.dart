@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:hoeizon_app/dp_helper/database.dart';
+import 'package:hoeizon_app/model/collection_model.dart';
+import 'package:hoeizon_app/provider/provider.dart';
 import 'package:hoeizon_app/screen/add_user/add_user.dart';
 import 'package:hoeizon_app/screen/collection/todays_collection.dart';
 import 'package:hoeizon_app/screen/deposit/deposit_screen.dart';
 import 'package:hoeizon_app/screen/loan/loan_screen.dart';
 import 'package:hoeizon_app/screen/widget/card_widget.dart';
 import 'package:hoeizon_app/screen/widget/list_card.dart';
+import 'package:provider/provider.dart';
 import 'drawer.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,6 +19,23 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<Map<String, dynamic>> dataFromTable = [];
+
+  Future<void> fetchDataFromDatabase() async {
+    List<Collection> dbData = await DatabaseHelper.instance.getAllCollections();
+
+    setState(() {
+      dataFromTable =
+          dbData.reversed.map((collection) => collection.toMap()).toList();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDataFromDatabase();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,6 +44,7 @@ class _HomePageState extends State<HomePage> {
       ),
       drawer: const DrawerContent(),
       body: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
         child: Column(
           children: [
             Container(
@@ -67,11 +89,18 @@ class _HomePageState extends State<HomePage> {
                           builder: (context) => const DepositPage()),
                     );
                   },
-                  child: const CardWidget(
-                    title: "Deposits Collection",
-                    amount: "Rs. 23,500",
-                    secondaryText: "Remaining deposits: 50",
-                    cardColor: Colors.orange,
+                  child: Consumer<CollectionProvider>(
+                    builder: (context, depositProvider, _) {
+                      String depositAmountText =
+                          "Rs. ${depositProvider.totalDeposit.toStringAsFixed(2)}";
+                      return CardWidget(
+                        title: "Deposits Collection",
+                        amount: depositAmountText,
+                        secondaryText:
+                            "Deposit Collected: ${depositProvider.noDeposit}",
+                        cardColor: Colors.orange,
+                      );
+                    },
                   ),
                 ),
                 GestureDetector(
@@ -81,11 +110,18 @@ class _HomePageState extends State<HomePage> {
                       MaterialPageRoute(builder: (context) => const LoanPage()),
                     );
                   },
-                  child: const CardWidget(
-                    title: "Loans Collection",
-                    amount: "Rs. 35,500",
-                    secondaryText: "Number of collected loans: 50",
-                    cardColor: Colors.red,
+                  child: Consumer<CollectionProvider>(
+                    builder: (context, collectionProvider, _) {
+                      String loanAmountText =
+                          "Rs. ${collectionProvider.totalLoan.toStringAsFixed(2)}";
+                      return CardWidget(
+                        title: "Loan Collection",
+                        amount: loanAmountText,
+                        secondaryText:
+                            "Loan Collected: ${collectionProvider.noloan}",
+                        cardColor: Colors.red,
+                      );
+                    },
                   ),
                 ),
                 GestureDetector(
@@ -96,11 +132,20 @@ class _HomePageState extends State<HomePage> {
                           builder: (context) => const CollectionPage()),
                     );
                   },
-                  child: const CardWidget(
-                    title: "Today's Collection",
-                    amount: "Rs. 63,300",
-                    secondaryText: "Number of deposits: 50",
-                    cardColor: Colors.green,
+                  child: Consumer<CollectionProvider>(
+                    builder: (context, collectionProvider, _) {
+                      String totalAmountText =
+                          "Rs. ${collectionProvider.todaysCollection.toStringAsFixed(2)}";
+                      String noTotal = (collectionProvider.noloan +
+                              collectionProvider.noDeposit)
+                          .toString();
+                      return CardWidget(
+                        title: "Total Collection",
+                        amount: totalAmountText,
+                        secondaryText: "Total Collection : $noTotal",
+                        cardColor: Colors.green,
+                      );
+                    },
                   ),
                 ),
                 GestureDetector(
@@ -120,7 +165,9 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             const SizedBox(height: 20),
-            ListViewBuilderTable(),
+            ListViewBuilderTable(
+              listViewItems: dataFromTable,
+            ),
           ],
         ),
       ),
