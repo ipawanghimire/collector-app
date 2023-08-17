@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               crossAxisCount: 2,
-              childAspectRatio: 2.3,
+              childAspectRatio: 1.89,
               mainAxisSpacing: 10,
               crossAxisSpacing: 10,
               padding: const EdgeInsets.symmetric(horizontal: 16)
@@ -142,7 +142,7 @@ class _HomePageState extends State<HomePage> {
                       return CardWidget(
                         title: "Total Collection",
                         amount: totalAmountText,
-                        secondaryText: "Total Collection : $noTotal",
+                        secondaryText: "Total Collected : $noTotal",
                         cardColor: Colors.green,
                       );
                     },
@@ -155,11 +155,12 @@ class _HomePageState extends State<HomePage> {
                       MaterialPageRoute(builder: (context) => AddUserPage()),
                     );
                   },
-                  child: const CardWidget(
+                  child: CardWidget(
                     title: "Member Registration",
                     amount: "",
                     secondaryText: "Add a new member",
                     cardColor: Colors.blue,
+                    icon: Icons.person_add, // Provide the icon
                   ),
                 ),
               ],

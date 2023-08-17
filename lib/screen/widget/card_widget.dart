@@ -1,18 +1,31 @@
 import 'package:flutter/material.dart';
 
-class CardWidget extends StatelessWidget {
+class CardWidget extends StatefulWidget {
   final String title;
   final String amount;
   final String secondaryText;
   final Color cardColor;
+  final IconData? icon; // Add this property for the icon
 
   const CardWidget({
-    super.key,
+    Key? key,
     required this.title,
     required this.amount,
     required this.secondaryText,
     required this.cardColor,
-  });
+    this.icon, // Initialize the icon property
+  }) : super(key: key);
+
+  @override
+  _CardWidgetState createState() => _CardWidgetState();
+}
+
+class _CardWidgetState extends State<CardWidget> {
+  bool showActualAmount = true;
+
+  String getDisplayedAmount() {
+    return showActualAmount ? widget.amount : 'XXX-XXX-XXX';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +35,7 @@ class CardWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
       ),
       child: Card(
-        color: cardColor.withOpacity(0.9),
+        color: widget.cardColor.withOpacity(0.9),
         elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
@@ -34,29 +47,62 @@ class CardWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                title,
+                widget.title,
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 8),
-              Text(
-                amount,
-                style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  // color: Colors.white,
+              if (widget.amount.isNotEmpty) // Conditionally show eye icon
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        getDisplayedAmount(),
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          showActualAmount = !showActualAmount;
+                        });
+                      },
+                      icon: Icon(
+                        showActualAmount
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Colors.black,
+                        size: 28,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
               Align(
-                alignment: Alignment.bottomRight,
+                alignment: Alignment.centerRight,
                 child: Text(
-                  secondaryText,
+                  widget.secondaryText,
                   style: const TextStyle(
-                      fontSize: 14, fontWeight: FontWeight.bold),
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
+              if (widget.icon != null)
+                Container(
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.only(left: 16),
+                  child: Icon(
+                    widget.icon,
+                    color: Colors.black,
+                    size: 60,
+                  ),
+                ),
             ],
           ),
         ),

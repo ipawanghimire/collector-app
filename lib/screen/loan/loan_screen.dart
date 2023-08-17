@@ -89,7 +89,7 @@ class LoanPage extends StatelessWidget {
                       totalProvider.addToTotalTodaysCollection();
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Deposit saved successfully'),
+                          content: Text('Loan saved successfully'),
                           duration: Duration(seconds: 2),
                         ),
                       );
