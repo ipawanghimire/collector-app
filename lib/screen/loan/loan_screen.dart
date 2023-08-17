@@ -21,7 +21,6 @@ class LoanPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            // Navigate to a specific page when the back arrow is pressed
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const BottomNavigation()),
@@ -46,16 +45,15 @@ class LoanPage extends StatelessWidget {
               ReusableTextFormField(
                 label: 'Account Number',
                 textColor: Colors.black,
-                controller: accountNumber, // Provide your controller
-
-                underlineColor: Colors.black, // Set keyboard type
+                controller: accountNumber,
+                underlineColor: Colors.black,
               ),
               const SizedBox(height: 12),
               ReusableTextFormField(
                 label: 'A/c Holder\'s Name',
                 textColor: Colors.black,
-                controller: accountName, // Provide your controller
-                underlineColor: Colors.black, // Set keyboard type
+                controller: accountName,
+                underlineColor: Colors.black,
               ),
               const SizedBox(height: 12),
               ReusableTextFormField(
@@ -63,7 +61,7 @@ class LoanPage extends StatelessWidget {
                 textColor: Colors.black,
                 controller: amount,
                 keyboardType: TextInputType.number,
-                underlineColor: Colors.black, // Provide your controller
+                underlineColor: Colors.black,
               ),
               const SizedBox(height: 24),
               Row(
@@ -88,8 +86,7 @@ class LoanPage extends StatelessWidget {
                           context,
                           listen: false);
 
-                      totalProvider.addToTotalTodaysCollection(
-                          double.parse(amount.text));
+                      totalProvider.addToTotalTodaysCollection();
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Deposit saved successfully'),
@@ -104,7 +101,7 @@ class LoanPage extends StatelessWidget {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
-                      minimumSize: const Size(120, 48), // Set the minimum size
+                      minimumSize: const Size(120, 48),
                     ),
                     child: const Text(
                       'Save',

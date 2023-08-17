@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class QRPage extends StatefulWidget {
+  const QRPage({super.key});
+
   @override
   _QRPageState createState() => _QRPageState();
 }
@@ -28,7 +30,6 @@ class _QRPageState extends State<QRPage> {
         true,
         ScanMode.QR,
       );
-      print(barcodeScanRes);
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';
     }
@@ -49,7 +50,6 @@ class _QRPageState extends State<QRPage> {
         true,
         ScanMode.BARCODE,
       );
-      print(barcodeScanRes);
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';
     }
@@ -72,14 +72,14 @@ class _QRPageState extends State<QRPage> {
           children: <Widget>[
             ElevatedButton(
               onPressed: () => scanQR(),
-              child: Text('Start QR Scan'),
+              child: const Text('Start QR Scan'),
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Text(
               'Scan Result: $_scanBarcode\n',
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20),
             ),
           ],
         ),

@@ -37,8 +37,8 @@ class CollectionProvider extends ChangeNotifier {
 
   double get todaysCollection => _todaysCollection;
 
-  void addToTotalTodaysCollection(double amount) {
-    _todaysCollection += amount;
+  void addToTotalTodaysCollection() {
+    _todaysCollection = _totalLoan + _totalDeposit;
     notifyListeners();
   }
 

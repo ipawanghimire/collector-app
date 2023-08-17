@@ -43,7 +43,7 @@ class CardWidget extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 amount,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                   // color: Colors.white,

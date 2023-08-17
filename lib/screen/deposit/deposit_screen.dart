@@ -90,8 +90,7 @@ class DepositPage extends StatelessWidget {
                       final totalProvider = Provider.of<CollectionProvider>(
                           context,
                           listen: false);
-                      totalProvider.addToTotalTodaysCollection(
-                          double.parse(amount.text));
+                      totalProvider.addToTotalTodaysCollection();
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(

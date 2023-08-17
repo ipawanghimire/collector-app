@@ -11,7 +11,6 @@ class ListViewBuilderTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (listViewItems.isEmpty) {
-      // Display a message when the table is empty
       return const Center(
         child: Text(
           'No recent collections for today.',
@@ -19,7 +18,6 @@ class ListViewBuilderTable extends StatelessWidget {
         ),
       );
     } else {
-      // Display the ListView when there are records
       return Column(
         children: [
           const Padding(
